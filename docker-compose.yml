@@ -1,0 +1,39 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge 
+
+services:
+  moviemicroservice:
+    image: ${DOCKER_REGISTRY-}moviemicroservice
+    depends_on:
+      - "moviedb"
+    container_name: moviemicroservice
+    ports:
+      - "5009:80"
+    build:
+      context: .
+      dockerfile: MovieMicroservice/Dockerfile
+    environment:
+      - ConnectionString=host=localhost;port=5432;database=moviedb;username=postgres;password=admin;Pooling=true;
+    networks:
+      - dev
+
+  moviedb:
+    image: postgres:latest
+    container_name: moviedb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=moviedb
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - movie_data:/var/lib/postgresql/data/ 
+    networks:
+      - dev
+
+volumes:
+  movie_data:
