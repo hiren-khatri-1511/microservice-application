@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: MovieMicroservice/Dockerfile
     environment:
-      - ConnectionString=host=localhost;port=5432;database=moviedb;username=postgres;password=admin;Pooling=true;
+      - ConnectionString=host=localhost;port=5432;database=moviedb;username=user;password=password;Pooling=true;
     networks:
       - dev
 
@@ -24,8 +24,8 @@ services:
     image: postgres:latest
     container_name: moviedb
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
       - POSTGRES_DB=moviedb
     ports:
       - "5432:5432"
